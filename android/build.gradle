@@ -2,14 +2,14 @@ group 'id.oddbit.flutter.facebook_app_events'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.5.21'
+    ext.kotlin_version = '1.9.10'
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:8.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -25,18 +25,32 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 28
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 19
+        compileSdk 34
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
+
     lintOptions {
         disable 'InvalidPackage'
     }
+
+    namespace "id.oddbit.flutter.facebook_app_events"
 }
 
 dependencies {
@@ -51,5 +65,6 @@ dependencies {
     // About the version syntax:
     //  - https://github.com/oddbit/flutter_facebook_app_events/pull/189#discussion_r768267841
     //  - https://docs.oracle.com/middleware/1212/core/MAVEN/maven_version.htm#MAVEN402
-    implementation 'com.facebook.android:facebook-android-sdk:[16.0,17.0)'
+    implementation 'com.facebook.android:facebook-android-sdk:16.3.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }
